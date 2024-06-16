@@ -6,10 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 
 
@@ -20,14 +22,45 @@ public class PersonaCrud {
     ResultSet rs ;
     Connection con;
     Conexion conectar =new Conexion();
+    Persona p =new Persona();
     
     
+    
+    public int Actualizar  (Persona per){
+         String sql = "update persona set DNI=?, Nombres=? where id=?; ";
+         
+        int r =0;
+       
+        try {
+            con = conectar.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setString(1, per.getDNI());
+            ps.setString(2, per.getNombres());
+            ps.setInt(3, per.getId());
+            r = ps.executeUpdate();
+            if(r ==1){
+                return 1;
+            } else{
+                return 0;
+            }
+            
+        } catch (Exception ex) {
+           
+        }
+        
+        
+        
+     
+        
+        
+        return r;
+    }
     
     
      public int agregar(Persona per){
          
-            Persona p = new Persona();
-            p= per;
+         
+          //  p= per;
             
         int r=0;
         String sql="insert into persona(DNI,Nombres)values(?,?)"; 
@@ -37,8 +70,8 @@ public class PersonaCrud {
         try {
             con = conectar.getConnection();
             ps = con.prepareStatement(sql);
-           ps.setString(1, p.getDNI());
-            ps.setString(2, p.getNombres());
+            ps.setString(1, per.getDNI());
+            ps.setString(2, per.getNombres());
             r=ps.executeUpdate();
             
                 if(r==1){
